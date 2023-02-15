@@ -73,26 +73,25 @@
 {% endblock %}
 
 {% block body %}
-<div>
-
-    <div style="position: absolute; top: 6vh; width: 100%; display: flex; ">
+    <div id="main1" style="position: absolute; top: 6vh; width: 100%; display: flex; ">
         <!-- space for adds -->
         {% if user.user_type == 'shopper' %}
-        <div style="width: 25%; height: 92vh; background-color: wheat; margin: auto; margin-top: 0px; position: sticky; top: 6vh;">
+        <div
+            style="width: 25%; height: 92vh; background-color: wheat; margin: auto; margin-top: 0px; position: sticky; top: 6vh;">
             dito ang Categories
         </div>
         {% endif %}
-        <div style="width: 70%; overflow-x: hidden; margin: auto; overflow-y: scroll; height: 92vh;" >
+        <div style="width: 70%; overflow-x: hidden; margin: auto; overflow-y: scroll; height: 92vh;">
             <div style="height: 40vh ; background-color: chocolate; text-align: center; margin: auto;" id="adsDiv"
                 data-ajax-url="{% url 'shop:ads' %}" data-ajax-User-id="{{ user.id }}">
                 {% block ads %}
                 {% endblock %}
             </div>
             <div style="height: auto; width: 100%; background-color: aquamarine;text-align: center;">
-                
-            <div class="slideshow-container" id="slideContainer" style="text-align: center;">
-                <h1 style="padding-top: 50px;">Shop Products</h1>
-            </div>
+
+                <div class="slideshow-container" id="slideContainer" style="text-align: center;">
+                    <h1 style="padding-top: 50px;">Shop Products</h1>
+                </div>
 
                 <div class="cardContainer" id="cardContainer" data-ajax-url="{% url 'shop:items' %}">
 
@@ -103,7 +102,7 @@
             </div>
         </div>
     </div>
-</div>
+
 
 {% endblock %}
 {% block js %}

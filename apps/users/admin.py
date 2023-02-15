@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from apps.users.models import MyCustomUser,UserInformation
+from .models import MyCustomUser,UserInformation
 
 @admin.register(MyCustomUser)
 class MyCustomUser(AuthUserAdmin):

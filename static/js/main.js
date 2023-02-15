@@ -100,3 +100,26 @@ function viewOrders(status){
         }
     })
 }
+
+function get_badge_counts(){
+    $.ajax({
+        url: 'orders/get-orders',
+        success: function(data){
+            $("#body").html(data.htmlStr)
+            document.getElementById('xx').value = status
+            clearInterval(showSlide)
+        },error: function(xhr, textStatus, error){
+
+        }
+    })
+}
+
+function openNotification() {
+    document.getElementById("mySidenav").style.width = "400px";
+    
+  }
+  
+  function closeNotification() {
+    document.getElementById("mySidenav").style.width = "0";
+    // document.getElementById("main").style.marginLeft= "0";
+  }

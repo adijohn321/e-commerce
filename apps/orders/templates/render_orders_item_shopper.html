@@ -3,6 +3,19 @@
 <div style="margin: 20px; border: solid 1px black; padding: 10px; background-color: darkslategray;">
     <span style="margin: 10px; font-size: 16px; display: block;;">Order Number : {{ order.order_number }}</span>
     <span style="margin: 10px; font-size: 16px; display: block;;">Delivery Address : Customer Address</span>
+    <span style="margin: 10px; font-size: 16px; display: block;;">Ordered : {{ order.created_at | timesince }} ago</span>
+    {% if order.status == 'canceled' %}
+    <span style="margin: 10px; font-size: 16px; display: block;;">Date Canceled: {{ order.modified_at }}</span>
+    {% elif order.status == 'preparing' %}
+    <span style="margin: 10px; font-size: 16px; display: block;;">Date Approved: {{ order.modified_at }}</span>
+    {% elif order.status == 'request_cancel' %}
+    <span style="margin: 10px; font-size: 16px; display: block;;">Date of Request: {{ order.modified_at }}</span>
+    {% elif status == 'otw' %}
+    <span style="margin: 10px; font-size: 16px; display: block;;">Date of Delivery: {{ order.modified_at }}</span>
+    {% elif status == 'recieved' %}
+    <span style="margin: 10px; font-size: 16px; display: block;;">Date Delivered: {{ order.modified_at }}</span>
+    {% else %}
+    {% endif %}
     <div style="border: solid 1px black; padding: 10px;" >
         <div style="display: flex;">
             <span style="width: 100px;">Quantity</span> <span>Items</span>

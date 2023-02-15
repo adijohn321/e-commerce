@@ -1,0 +1,51 @@
+{% autoescape off %}
+{% load static %}
+
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/items.css' %}" type="text/css">
+{% endblock %}
+<div style="background-color: yellow; width: 100%; height: 3.5vh; top: 5.5vh;position: absolute;"></div>
+
+<div
+    style="position: absolute; top: 9vh; width: 100%; height: -webkit-fill-available;background-color: antiquewhite; padding: 20px; display: flex; margin: auto;">
+    
+    <div class="leftDiv"
+        style="height: 100%;width: 25%; overflow-y: scroll; background-color: rgb(129, 129, 184);margin: auto; margin-right: 20px;">
+        <div class="title" style="height: 46px;">
+            <input type="text" name="search" id="searchItems" placeholder="Search Items.." class="searchItems" onkeydown="loadItemOwnerSearch()">
+          </div>
+        <div class="itemsContainer" id="itemsContainer" data-ajax-url="{% url 'shop:items_owner' %}" data-ajax-url-edit="{% url 'shop:edit_item' %}">
+
+
+        </div>
+    </div>
+    <div class="rightDiv" style="height: 100%;width: 60%; background-color: cadetblue; margin: auto;margin-left: 10px;">
+
+        <div style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        border: 3px solid green; ">
+
+            <div class="loader">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% block js %}
+<script src="{% static 'js/item_owner.js' %}"></script>
+
+{% endblock %}
+
+
+
+
+{% endautoescape %}

@@ -1,0 +1,44 @@
+{% if orders %}
+{% for order in orders.all %}
+<div style="margin: 20px; border: solid 1px black; padding: 10px; background-color: darkslategray;">
+    <span style="margin: 10px; font-size: 16px; display: block;;">Order Number : {{ order.order_number }}</span>
+    <span style="margin: 10px; font-size: 16px; display: block;;">Delivery Address : Customer Address</span>
+    <div style="border: solid 1px black; padding: 10px;" >
+        <div style="display: flex;">
+            <span style="width: 100px;">Quantity</span> <span>Items</span>
+        </div>
+        <hr>
+        {% for item in order.order_item.all %}
+        
+        <div style="display: flex; margin-top: 5px; background-color: lightgreen; padding: 3px;">
+            <span style="width: 100px;">{{ item.quantity }} pc/s</span> 
+            <span style="width: -webkit-fill-available;">{{ item.item.name }}</span>
+            <span style="width: 20%; text-align: right;">{{ item.total }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    <div style="width: 100%;">
+        <span style="float: right; padding: 10px;">Grand Total : {{ order.get_total }}</span>
+
+    </div>
+    <div style="display: flex; width: 100%; justify-content: center;">
+        {% if status == 'recieved' %}
+        <button style="width: 50%; padding: 10px;  margin: auto;" >Rate Items</button>
+        {% elif status == 'canceled' %}
+        {% elif status == 'pending' %}
+        <button style="width: 50%; padding: 10px;  margin: auto;" onclick="approve('{{ order.order_number }}','canceled')" >Cancel Order</button>
+        {% elif status == 'otw' %}
+        <button style="width: 50%; padding: 10px;  margin: auto;"  onclick="approve('{{ order.order_number }}','recieved')" >Recieved Order</button>
+        {% else %}
+        {% if order.status == 'request_cancel' %}
+        <span>Request to Cancel order has been sent</span>
+        {% else %}
+        <button style="width: 50%; padding: 10px;  margin: auto;" onclick="approve('{{ order.order_number }}','request_cancel')">Request to Cancel Order</button>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div style="text-align: center; padding-top: 40vh; ">No data for orders with status code: {{ status }}</div>
+{% endif %}

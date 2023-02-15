@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+{% load static %}
+{% block title %}Items - Citi Hardware {% endblock %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/items.css' %}" type="text/css">
+{% endblock %}
+
+{% block body %}
+<div
+    style="position: absolute; top: 6vh; width: 100%; height: -webkit-fill-available;background-color: antiquewhite; padding: 20px; display: flex;">
+    <div class="rightDiv" style="height: 100%;width: 70%; background-color: cadetblue;">
+
+        <div style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        border: 3px solid green; ">
+
+            <div class="loader">
+
+            </div>
+        </div>
+
+    </div>
+    <div class="leftDiv"
+        style="height: 100%;width: 30%; overflow-y: scroll; background-color: rgb(129, 129, 184); margin-left: 20px;">
+        <div class="title">Shop Items</div>
+        <div class="itemsContainer" id="itemsContainer" data-ajax-url="{% url 'shop:items_owner' %}" data-ajax-url-edit="{% url 'shop:edit_item' %}">
+
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/item_owner.js' %}"></script>
+
+{% endblock %}

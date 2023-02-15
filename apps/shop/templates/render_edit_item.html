@@ -1,0 +1,40 @@
+{% autoescape off %}
+{% load static %}
+{% block css %}
+
+
+<link rel="stylesheet" href="{% static 'css/edit_item.css' %}">
+{% endblock %}
+
+
+<div class="editItemContainer">
+    <div class="editItemTitle">
+
+    </div>
+    <div class="editItemFormContainer" style="display: flex;flex-direction: column; height: 100%;  margin: auto;">
+        <img src="{{ item.image.url }}" alt="Item Image" style="width: 35%; height: auto; margin: auto; margin-top: 20px;">
+        <h2 style="text-align: center;">{{ item.name }}</h2>
+        <form data-ajax-item-id="{{ item.id }}" style="display: contents; " id="formEditItem" data-ajax-url="{% url 'shop:update_item' %}" enctype="multipart/form-data">
+            <label for="editItemImage">Upload new Image:</label>
+            <input type="file" alt="" name="i-editItemImage" id="i-editItemImage">
+            <label for="name">Item Name:</label>
+            <input type="text" name="name" id="name" value="{{ item.name }}">
+            <label for="desc">Description:</label>
+            <textarea name="desc" id="desc" rows="5" cols="30">{{ item.description }}</textarea>
+            
+            <label for="price">Item Price:</label>
+            <input type="text" name="price" id="price" value="{{ item.price }}">
+            <h4>Stock: {{ item.stock }} (You can edit this space in add item stock)</h4>
+            <input type="submit" value="Update Item" style="padding: 10px;">
+        </form>
+        <button id="deleteItem" style="padding: 10px;" data-ajax-url="{% url 'shop:delete_item' %}">Delete Item</button>
+        <button  style="padding: 10px; margin-top: 30px;" id="myBtn">New Item</button>
+    </div>
+</div>
+
+
+{% block js %}
+
+{% endblock %}
+
+{% endautoescape %}

@@ -1,0 +1,30 @@
+<div style="position: sticky; top: 0px; background-color: cornflowerblue; padding: 5px;">
+    <div style="display: flex; padding: 5px;">
+        <div style="width: 60%;">Item Name </div>
+        <div style="width: 20%;">Stock </div>
+        <div>Ordered </div>
+    </div>
+</div>
+{% for item in items.all %}
+
+{% if item.stock == 0 %}
+<div style="display: flex; background-color: red; padding: 5px; margin-top: 5px; margin-right: 5px; padding-left: 10px;">
+    <div style="width: 60%;">{{ item.name}} </div>
+    <div style="width: 20%;">{{ item.stock}} </div>
+    <div>{{ item.get_total_ordered}} </div>
+</div>
+{% elif item.get_total_ordered > item.stock %}
+
+<div style="display: flex; background-color: orange; padding: 5px; margin-top: 5px; margin-right: 5px; padding-left: 10px;">
+    <div style="width: 60%;">{{ item.name}} </div>
+    <div style="width: 20%;">{{ item.stock}} </div>
+    <div>{{ item.get_total_ordered}} </div>
+</div>
+{% else %}
+<div style="display: flex;padding: 5px;   margin-top: 5px; margin-right: 5px; padding-left: 10px;">
+    <div style="width: 60%;">{{ item.name}} </div>
+    <div style="width: 20%;">{{ item.stock}} </div>
+    <div>{{ item.get_total_ordered}} </div>
+</div>
+{% endif %}
+{% endfor %}

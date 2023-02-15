@@ -1,0 +1,50 @@
+{% autoescape off %}
+{% load static %}
+
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/items.css' %}" type="text/css">
+{% endblock %}
+
+
+<div style="position: absolute; top: 6vh; width: 100%; height: -webkit-fill-available;background-color: antiquewhite; padding: 20px; display: flex;">
+    <div class="leftDiv"style="height: 100%;width: 25%; overflow-y: scroll; background-color: rgb(129, 129, 184);margin: auto; margin-right: 20px;">
+        <div class="title" style="height: 46px; ">
+            <form >
+            <input type="text" name="search" placeholder="Search Ads.." class="searchItems">
+          </form>
+        </div>
+        <div class="itemsContainer" id="itemsContainer" data-ajax-url-edit="{% url 'shop:edit_ads' %}">
+            {% include 'render_ads_owner.html' %}
+
+        </div>
+    </div>
+    <div class="rightDiv" style="height: 100%;width: 70%; background-color: cadetblue; margin: auto; margin-left: 10px; padding: 20px;">
+
+        <div style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        border: 3px solid green; ">
+
+            <div class="loader">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% block js %}
+<script src="{% static 'js/ads_owner.js' %}"></script>
+
+{% endblock %}
+
+
+
+
+{% endautoescape %}

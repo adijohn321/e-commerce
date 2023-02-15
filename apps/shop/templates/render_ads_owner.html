@@ -1,0 +1,21 @@
+{% autoescape off %}
+{% load static %}
+{% if ads.all %}
+{% for item in ads.all %}
+
+
+<div class="itemDiv" onclick="editAds('{{ item.id }}')" >
+    <div class="image">
+        <img src="{{ item.ads_image.url }}" alt="Image" style="height: 30px; width: 30px;">
+    </div>
+    <h4  style="cursor: pointer;">{{ item.ads_name }}</h4>
+</div>
+
+
+
+{% endfor %}
+
+{% else %}
+<p colspan="5">No Data</p>
+{% endif %}
+{% endautoescape %}

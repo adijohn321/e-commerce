@@ -1,0 +1,125 @@
+{% autoescape off %}
+{% load static %}
+{% block css %}
+
+
+{% endblock %}
+
+
+<div style="position: absolute; top: 6vh; width: 100%;text-align: center;margin: auto;color:black">
+    <h1>My Cart</h1>
+    <div style="display: flex;">
+        <div class="myCartItemsContainer" style=" overflow-y: scroll ; overflow-x: hidden; display: block;">
+            <div style="width: 100%; height: 60px; background-color: chartreuse;position: sticky; top: 0px;">
+                <h3>Items</h3>
+            </div>
+            <div style="width: 100%; background-color: antiquewhite;">
+                {% for item in items.all %}
+                {% if item.item.stock %}
+                <div>
+                    <div
+                        style="margin: 10px;width: 40vw;margin: auto; text-align: left; display: flex;border: solid 1px black; margin-top: 5px;">
+                        <img src="{{ item.item.image.url }}" alt="" style="width: 100px; height: auto; margin: 5px;">
+                        <div
+                            style="width: 80%; height: 100px; margin: 5px;display: block; background-color: cadetblue;">
+                            <h1 style="margin-top: 15px; margin-left: 10px;">{{ item.item.name|truncatechars:30 }} </h1>
+                            <small style="margin-left: 10px;">Description: {{ item.item.description }}</small>
+                            <h6 style="margin-left: 10px;" class="price">Price: &dollar;{{ item.item.price }}</h6>
+                        </div>
+                        <div style="height: 100px; margin: 5px; background-color: crimson; width: 20%;"
+                            class="selectedCheckOut">
+                            
+                            <h6 style="margin-left: 10px;" hidden class="price">{{ item.item.price }}</h6>
+                            <h6 style="margin-left: 10px;" hidden class="item_id">{{ item.item.id }}</h6>
+
+                            <label for="quantity">Quantity: </label>
+
+
+
+                            {% if item.item.stock > 0 %}
+                            <input type="number" name="quantity" id="" min="1" max="{{ item.item.stock }}"
+                                style="width:60px;" value="{{ item.quantity }}" onchange="calculateItem()" class="quantityOut">
+                            <h5 id="total">Total: &dollar;{{ item.total }}</h5>
+                            <label for="select">Check Out</label>
+                            <input type="checkbox" name="select" id="select{{ item.id }}" onchange="calculateItem()" class="checkedOut">
+                            {% else %}
+                            <input type="number" name="quantity" id="" min="1" max="{{ item.item.stock }}"
+                                style="width:60px;" value="{{ item.quantity }}" onchange="calculateItem()" class="quantityOut" disabled>
+                            <h5 id="total">Total: &dollar;{{ item.total }}</h5>
+                            <label for="select">Check Out</label>
+                            <input type="checkbox" name="select" id="select{{ item.id }}" onchange="calculateItem()" class="checkedOut" disabled>
+                            <br>
+                            <h5>Out of Stock</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <h3>Wishlist Items</h3>
+                {% for item in items.all %}
+                {% if not item.item.stock %}
+                <div>
+                    <div
+                        style="margin: 10px;width: 40vw;margin: auto; text-align: left; display: flex;border: solid 1px black; margin-top: 5px;">
+                        <img src="{{ item.item.image.url }}" alt="" style="width: 100px; height: auto; margin: 5px;">
+                        <div
+                            style="width: 80%; height: 100px; margin: 5px;display: block; background-color: cadetblue;">
+                            <h1 style="margin-top: 15px; margin-left: 10px;">{{ item.item.name|truncatechars:30 }} </h1>
+                            <small style="margin-left: 10px;">Description: {{ item.item.description }}</small>
+                            <h6 style="margin-left: 10px;" class="price">Price: &dollar;{{ item.item.price }}</h6>
+                        </div>
+                        <div style="height: 100px; margin: 5px; background-color: crimson; width: 20%;"
+                            class="selectedCheckOutOfStock">
+                            
+                            <h6 style="margin-left: 10px;" hidden class="price">{{ item.item.price }}</h6>
+                            <label for="quantity">Quantity: </label>
+
+
+
+                            {% if item.item.stock > 0 %}
+                            <input type="number" name="quantity" id="" min="1" max="{{ item.item.stock }}"
+                                style="width:60px;" value="{{ item.quantity }}" onchange="calculateItem()" class="quantityOut">
+                            <h5 id="total">Total: &dollar;{{ item.total }}</h5>
+                            <label for="select">Check Out</label>
+                            <input type="checkbox" name="select" id="select{{ item.id }}" onchange="calculateItem()" class="checkedOut">
+                            {% else %}
+                            <input type="number" name="quantity" id="" min="1" max="{{ item.item.stock }}"
+                                style="width:60px;" value="{{ item.quantity }}" onchange="calculateItem()" class="quantityOut" disabled>
+                            <h5 id="total">Total: &dollar;{{ item.total }}</h5>
+                            <label for="select">Check Out</label>
+                            <input type="checkbox" name="select" id="select{{ item.id }}" onchange="calculateItem()" class="checkedOut" disabled>
+                            <br>
+                            <h5>Out of Stock</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div
+            style="width: 25vw; height: 85vh; background-color: thistle; margin: auto;margin-left: 10px; display: flex; flex-direction: column;">
+            <div style="width: 100%; height: 60px; background-color: antiquewhite;">
+                <h3>Information</h3>
+            </div>
+            <div style="height: 85%; width: 100%; display: flex;flex-direction: column;">
+                <h4 id="itemsSelected">Items selected: 0</h4>
+                <h4 id="totalItems">Total Items: 0</h4>
+                <h1 id="totalAmount">Total Amount: &dollar;0.00</h1>
+                <hr>
+                <h3>Delivery Address</h3>
+            </div>
+            <div>
+                <hr>
+                <form id="submitFormCheckOut" data-ajax-url="{% url 'orders:add_order' %}"  data-csrf-token="{{ csrf_token }}" tabindex="-1" role="dialog" ></form>
+                <button onclick="placeOrder()" id="submitCheckOut" style="height: auto; width: auto; padding: 10px;" disabled>Place Order</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endautoescape %}

@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+
+
+<form id="createAdsForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+</form>
+<button id="createAds">Create</button>
+
+{% endautoescape %}

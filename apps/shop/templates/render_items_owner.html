@@ -1,0 +1,21 @@
+{% autoescape off %}
+{% load static %}
+{% if items.all %}
+{% for item in items.all %}
+
+
+<div class="itemDiv" onclick="editItem('{{ item.id }}')">
+    <div class="image">
+        <img src="{{ item.image.url }}" alt="Image" style="height: 30px; width: 30px;">
+    </div>
+    <h4  style="cursor: pointer;">{{ item.name }}</h4>
+</div>
+
+
+
+{% endfor %}
+
+{% else %}
+<p colspan="5">No Data</p>
+{% endif %}
+{% endautoescape %}

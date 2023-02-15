@@ -1,0 +1,95 @@
+{% autoescape off %}
+{% load static %}
+
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/items.css' %}" type="text/css">
+{% endblock %}
+
+
+<div style="position: absolute; top: 6vh; width: 100%; height: -webkit-fill-available;background-color: antiquewhite; padding: 20px; display: flex; margin: auto;">
+    <div class="rightDiv"
+        style="height: 100%;width: 30%; background-color: cadetblue; margin: auto; margin-right: 10px; padding: 10px;">
+        <div>
+
+            <h2 style="text-align: center; padding: 20px;">Items Inventory Summary</h2>
+        </div>
+        <div style="width: auto; height: 83%;  overflow-y: scroll; ">
+
+            {% include 'render_items_order.html' %}
+        </div>
+        <div class="title" style="height: 70px; width: 100%; position: sticky; bottom: 0px;">
+            <div>Legend</div>
+            <div style="text-align: center; width: 100%; display: flex;">
+                <div style="width: 20px; height: 20px; background-color: lightgreen;margin-left: 10px;"></div><span
+                    style="font-size: 12px; width: 30%; text-align: left; padding: 3px;">All Good</span>
+                <div style="width: 20px; height: 20px; background-color: orange;"></div><span
+                    style="font-size: 12px; width: 30%; text-align: left;padding: 3px;">There are more order than your
+                    current stock</span>
+                <div style="width: 20px; height: 20px; background-color: red;"></div><span
+                    style="font-size: 12px; width: 30%; text-align: left;padding: 3px;">Out of Stock</span>
+
+            </div>
+        </div>
+    </div>
+    <div class="leftDiv"
+        style="height: 100%;width: 70%; overflow-y: scroll; background-color: rgb(161, 148, 148); margin-left: 10px; margin: auto;">
+        <div class="title" style="height: auto; width: 100%; text-align: left;" data-ajax-url="{% url 'orders:accepts_orders' %}"
+            id="orderUrl">
+            <form>
+                <input type="text" name="search" placeholder="Search Orders.." class="searchItems"
+                    style="float: right; top: 0px;">
+            </form>
+            <span style="padding: 10px;">Status</span>
+            <select name="" id="xx" style="padding: 5px; margin: 3px;" onchange="viewOrders(this.options[this.selectedIndex].value)">
+                <option value="pending">Pending</option>
+                <option value="preparing">Preparing</option>
+                <option value="otw">Out For Delivery</option>
+                <option value="recieved">Delivered</option>
+                <option value="canceled">Canceled</option>
+            </select>
+            <span style="padding: 10px;">Month</span>
+            <select name="" id="xxx" style="padding: 5px; margin: 3px;">
+                <option value="pending">All</option>
+                <option value="pending">January</option>
+                <option value="preparing">February</option>
+                <option value="otw">March</option>
+                <option value="recieved">April</option>
+                <option value="canceled">May</option>
+                <option value="canceled">June</option>
+                <option value="canceled">July</option>
+                <option value="canceled">August</option>
+                <option value="canceled">September</option>
+                <option value="canceled">October</option>
+                <option value="canceled">November</option>
+                <option value="canceled">December</option>
+            </select>
+            <span style="padding: 10px;">Year</span>
+            <select name="" id="xxxx" style="padding: 5px; margin: 3px;" >
+                <option value="pending">All</option>
+                <option value="pending">2023</option>
+                <option value="preparing">2024</option>
+                <option value="otw">2025</option>
+                <option value="recieved">2026</option>
+                <option value="canceled">2027</option>
+            </select>
+        </div>
+        <div class="itemsContainer" id="itemsContainer" data-ajax-url-edit="{% url 'shop:edit_ads' %}">
+
+            {% include 'render_orders_item.html' %}
+        </div>
+
+
+    </div>
+
+
+    {% block js %}
+    <script src="{% static 'js/orders.js' %}"></script>
+
+    {% endblock %}
+
+
+
+
+    {% endautoescape %}

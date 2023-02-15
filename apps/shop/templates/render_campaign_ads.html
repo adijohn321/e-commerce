@@ -1,0 +1,26 @@
+{% autoescape off %}
+{% load static %}
+{% if ads.all %}
+
+<div style="margin: auto;">
+    {% for ad in ads.all %}
+
+    <div class="mySlides fade">
+        <img src="{{ ad.ads_image.url }}">
+    </div>
+    {% endfor %}
+
+    <!-- <a class="prev" >&#10094;</a>
+    <a class="next" >&#10095;</a> -->
+</div>
+<br>
+<div style="text-align:center; top:37vh;position: initial;width: 100%; transform: translateY(-45px);">
+    {% for ad in ads.all %}
+    
+    <span class="dot" ></span>
+    {% endfor %}
+</div>
+{% else %}
+<p colspan="5">No Data</p>
+{% endif %}
+{% endautoescape %}

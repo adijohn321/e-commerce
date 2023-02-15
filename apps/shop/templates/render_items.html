@@ -1,0 +1,64 @@
+{% autoescape off %}
+{% load static %}
+{% block css %}
+
+
+<link rel="stylesheet" href="{% static 'css/shopper.css' %}">
+{% endblock %}
+
+
+
+
+{% if items.all %}
+    <!-- dito ang add to cart modal  -->
+    <div class="addToCartModal" id="addToCartModal">
+        <div class="modal-content">
+            <div style=" text-align: end;">
+                <span class="closeAddToCart" style="color: black; cursor: pointer;">&times;</span>
+            </div>
+                <div class="informationDiv" id="informationDiv">
+                    <div id="loader" style="display: flex;justify-content: center;align-items: center;height: 600px; ">
+                        <div class="loader">
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+
+    </div>
+{% for item in items.all %}
+
+<div class="card">
+    <div style="border: solid 1px black;">
+        <img src="{{ item.image.url }}" alt="" style="width: 200px; height: auto;">
+        <div style="height: 80px; width: 100%;background-color: azure; text-align: left; padding: 5px;">
+            <h5 style="color: black; font-weight: bold; font-size: 15px; font-family: Arial, Helvetica, sans-serif;">{{ item.name|truncatechars:22 }}</h5>
+            <small style="color: black; overflow: hidden; font-size: 12px;">{{ item.description|truncatechars:30 }}</small>
+            <div>
+                <small style="color: black;width: 100%;">&dollar;{{ item.price }}</small>
+                <small style="color: black; margin-left: 5px;" >Stock: {{item.stock}}</small>
+            </div>
+            {% if user == item.shop.user %}
+            <button style="width: 100%;" onclick="openAddStock('{{ item.id }}')">Add To Stock</button>
+            {% else %}
+            <button style="width: 100%;" id="btnAddToCart" onclick="openAddToCart('{{ item.id }}')">Add To Cart</button>
+
+            
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% else %}
+<p colspan="5">No Data</p>
+{% endif %}
+{% block js %}
+{% if user.user_type == 'shopper' %}
+    <script src="{% static 'js/shopper.js' %}"></script>
+{% else %}
+    <script src="{% static 'js/seller.js' %}"></script>
+{% endif %}
+{% endblock %}
+
+{% endautoescape %}

@@ -1,0 +1,73 @@
+{% if orders %}
+{% for order in orders.all %}
+<div style="margin: 20px; border: solid 1px black; padding: 10px; background-color: darkslategray;">
+    <span style="margin: 10px; font-size: 16px; display: block;;">Order Number : {{ order.order_number }}</span>
+    <span style="margin: 10px; font-size: 16px; display: block;;">Customer : {{ order.owner.full_name }}</span>
+    <span style="margin: 10px; font-size: 16px; display: block;;">Delivery Address : Customer Address</span>
+    <span style="margin: 10px; font-size: 16px; display: block;;">Ordered : {{ order.created_at | timesince }} ago</span>
+    <span style="margin: 10px; font-size: 16px; display: block;;">Date Approved: {{ order.modified_at }}</span>
+    <div style="border: solid 1px black; padding: 10px;" >
+        <div style="display: flex;">
+            <span style="width: 100px;">Quantity</span> <span>Items</span>
+        </div>
+        <hr>
+        {% for item in order.order_item.all %}
+        
+        {% if not status == 'pending' %}
+        
+        <div style="display: flex; margin-top: 5px; background-color: lightgreen; padding: 3px;">
+            <span style="width: 100px;">{{ item.quantity }} pc/s</span> 
+            <span style="width: -webkit-fill-available;">{{ item.item.name }}</span>
+            <span style="width: 20%; text-align: right;">{{ item.total }}</span>
+        </div>
+        {% elif item.item.stock == 0 or item.quantity > item.item.stock %}
+        <div style="display: flex; margin-top: 5px; background-color: red; padding: 3px;">
+            <span style="width: 100px;">{{ item.quantity }} pc/s</span> 
+            <div class="tooltip" style="width: -webkit-fill-available;">{{ item.item.name }}
+                <span class="tooltiptext">Not enough stock in inventory</span>
+            </div>
+            <span style="width: 20%; text-align: right;">{{ item.total }}</span>
+        </div>
+        {% elif item.item.get_total_ordered > item.item.stock %}
+        <div style="display: flex; margin-top: 5px; background-color: orange; padding: 3px;">
+            <span style="width: 100px;">{{ item.quantity }} pc/s</span> 
+            <div class="tooltip" style="width: -webkit-fill-available;">{{ item.item.name }}
+                <span class="tooltiptext">This Item Has more order than your current stock</span>
+            </div>
+            <span style="width: 20%; text-align: right;">{{ item.total }}</span>
+        </div>
+        {% else %}
+        <div style="display: flex; margin-top: 5px; background-color: lightgreen; padding: 3px;">
+            <span style="width: 100px;">{{ item.quantity }} pc/s</span> 
+            <span style="width: -webkit-fill-available;">{{ item.item.name }}</span>
+            <span style="width: 20%; text-align: right;">{{ item.total }}</span>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div style="width: 100%;">
+        <span style="float: right; padding: 10px;">Grand Total : {{ order.get_total }}</span>
+
+    </div>
+    <div style="display: flex; width: 100%;">
+        {% if status == 'pending' %}
+        {% if not order.can_approve %}
+        <button style="width: 50%; padding: 10px;"  disabled>Approve</button>
+        {% else %}
+        <button style="width: 50%; padding: 10px;" onclick="approve('{{ order.order_number }}','preparing')">Approve</button>
+        {% endif %}
+        <button style="width: 50%; padding: 10px;">Void Order</button>
+        {% elif status == 'preparing' %}
+        {% if order.status == 'request_cancel' %}
+        <button style="width: 50%; padding: 10px; margin: auto;" onclick="approve('{{ order.order_number }}','canceled')" >Approve Cancelation</button>
+        {% endif %}
+        <button style="width: 50%; padding: 10px; margin: auto;" onclick="approve('{{ order.order_number }}','otw')" >Deliver</button>
+        {% elif status == 'otw' %}
+        {% else %}
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div style="text-align: center; padding-top: 40vh; ">No data for orders with status code: {{ status }}</div>
+{% endif %}

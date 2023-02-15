@@ -1,0 +1,36 @@
+{% autoescape off %}
+{% load static %}
+{% block css %}
+
+
+<link rel="stylesheet" href="{% static 'css/edit_item.css' %}">
+{% endblock %}
+
+
+<div class="editItemContainer">
+    <div class="editItemTitle">
+
+    </div>
+    <div class="editItemFormContainer" style="display: flex;flex-direction: column; height: 100%;  margin: auto;">
+        <img src="{{ item.ads_image.url }}" alt="Item Image" style="width: auto; height: 50vh; margin: auto; margin-top: 20px;">
+        <h2 style="text-align: center;">{{ item.ads_name }}</h2>
+        <form data-ajax-item-id="{{ item.id }}" style="display: contents; " id="formEditAd" data-ajax-url="{% url 'shop:update_ad' %}" enctype="multipart/form-data">
+            <label for="editItemImage">Upload new Image:</label>
+            <input type="file" alt="" name="i-editItemImage" id="i-editItemImage">
+            <label for="name">Item Name:</label>
+            <input type="text" name="name" id="name" value="{{ item.ads_name }}">
+            <label for="desc">Description:</label>
+            <textarea name="desc" id="desc" rows="5" cols="30">{{ item.ads_description }}</textarea>
+            <input type="submit" value="Update Ads Campaign" style="padding: 10px;">
+        </form>
+        <button style="padding: 10px;" data-ajax-url="{% url 'shop:delete_ad' %}" id="deleteAd">Delete Ads Campaign</button>
+        <button style="padding: 10px; margin-top: 20px;"  id="createAdsBtn">New Ads Campaign</button>
+    </div>
+</div>
+
+
+{% block js %}
+
+{% endblock %}
+
+{% endautoescape %}

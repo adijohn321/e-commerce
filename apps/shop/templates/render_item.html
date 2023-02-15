@@ -1,0 +1,30 @@
+{% autoescape off %}
+{% load static %}
+
+
+
+
+
+<div style="width: 100%; ; background-color: red;">
+    <img src="{{ item.image.url }}" alt="Item Image" style="width: 100%; height: auto;">
+</div>
+<div class="info" style="width: 100%; height: auto; padding: 10px; background-color: aqua; ">
+    <h5 style="color: black; font-weight: bold; font-size: 15px; font-family: Arial, Helvetica, sans-serif;">{{ item.name }}</h5>
+    <small style="color: black; overflow: hidden; font-size: 12px;">{{ item.description }}</small>
+    <div>
+        <small style="color: black;width: 100%;">Price: &dollar;{{ item.price }}</small>
+        <small style="color: black; margin-left: 5px;">Stock: {{item.stock}}</small>
+    </div>
+    <input style="width: 150px;" type="number" name="quantity" id="quantity" value="1" max="{{ item.stock }}" min="1">
+    <br>
+    {% if item.stock == 0 %}
+    <button style="width: 150px;" data-ajax-url="{% url 'cart:add_item' %}" data-ajax-item-id="{{ item.id }}" id="submitAddToCart" onclick="">Add To Wishlist</button>
+    {% else %}
+    <button style="width: 150px;" data-ajax-url="{% url 'cart:add_item' %}" data-ajax-item-id="{{ item.id }}" id="submitAddToCart" onclick="">Add To Cart</button>
+    {% endif %}
+    <br>
+    <button style="width: 150px;">More Info</button>
+</div>
+
+
+{% endautoescape %}

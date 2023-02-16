@@ -31,12 +31,14 @@ def ajax_create_order(request):
         order_number = order_number,
         status='pending'
     )
+    target = None
     order = Order.objects.get(order_number = order_number)
     for i in range(0, len(items)):
         my_item = Item.objects.get(id = items[i])
         add_item_order(my_item,order,quantities[i])
         remove_cart_item(my_item,request.user)
-        
+        target = my_item.shop.user
+    logs.send_notification(request.user,order, 'Placed an Order',target, 'important','')
     return JsonResponse({
         'success':True,
     })
@@ -112,6 +114,8 @@ def ajax_accept_order(request):
         
     order.status = status
     order.save()
+    shop = order.get_shop
+    owner = shop.user
     message = 'Operation was successful'
 
     items = OrderItem.objects.filter(order = order)
@@ -120,21 +124,23 @@ def ajax_accept_order(request):
         for item in items:
             update_item_stock(item.quantity*(-1),item.item.id)
             #notify user
-            logs.send_notification(request.user,order,'Approved cancelation of',order.owner,'important','sample')
-            message = 'Operation was successful. Order was canceled. All Items has been restored.'
+        logs.send_notification(request.user,order,'Approved cancelation of Order:',order.owner,'important','')
+        message = 'Operation was successful. Order was canceled. All Items has been restored.'
     if status == 'preparing':
         for item in items:
             update_item_stock(item.quantity,item.item.id)
             #notify user
-            logs.send_notification(request.user,order,'Approved your order',order.owner,'important','sample')
-            message = 'Order Accepted.'
+        logs.send_notification(request.user,order,'Approved your order :',order.owner,'important','')
+        message = 'Order Accepted.'
     if status == 'canceled' and current_status == 'pending':
         message = 'Your order has been canceled.'
     if status == 'otw':
         #notify user
+        logs.send_notification(request.user,order,'Seller has sent your your order and is now Out for Delivery :',order.owner,'important','')
         message = 'Order is now out for delivery.'
     if status == 'recieved':
         #notify seller
+        logs.send_notification(request.user,order,'Customer Recived his/her Order :',owner,'important','')
         message = 'Order has been recieved.'
     if status == 'request_cancel':
         #notify seller

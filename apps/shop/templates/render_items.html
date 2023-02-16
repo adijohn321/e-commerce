@@ -37,6 +37,7 @@
             <div>
                 <small style="color: black;width: 100%;">&dollar;{{ item.price }}</small>
                 <small style="color: black; margin-left: 5px;" >Stock: {{item.stock}}</small>
+                <small style="color: black; margin-left: 5px;" >Rating: {{item.get_item_rating}}</small>
             </div>
             {% if user == item.shop.user %}
             <button style="width: 100%;" onclick="openAddStock('{{ item.id }}')">Add To Stock</button>

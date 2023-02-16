@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from django.utils.translation import gettext_lazy as _
 
-from .models import Shop,AdsCampaign, Item
+from .models import Shop,AdsCampaign, Item,ItemRating
 
 # Register your models here.
 
@@ -26,6 +26,16 @@ class AdsCampaign(admin.ModelAdmin):
 class Item(admin.ModelAdmin):
     fieldsets = (
         (_('Item Information'),{'fields':('shop','name','description','price','stock','image')}),
+        (_('Permissions'), {'fields': (
+            'is_active',)
+        }),
+    )
+
+
+@admin.register(ItemRating)
+class ItemRating(admin.ModelAdmin):
+    fieldsets = (
+        (_('Item Rating'),{'fields':('item','rate','user','comment')}),
         (_('Permissions'), {'fields': (
             'is_active',)
         }),

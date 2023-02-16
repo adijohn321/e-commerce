@@ -72,3 +72,28 @@ class Item(BaseModel):
         for item in items:
             total+= item.quantity
         return total
+    @property
+    def get_item_rating(self):
+        rate = 0
+        if not self.item_rating.all():
+            return 0
+        for item_rating in self.item_rating.all():
+            rate += item_rating.rate
+        return rate/len(self.item_rating.all())
+    
+class ItemRating(BaseModel):
+    item = models.ForeignKey(
+        Item,
+        on_delete=models.CASCADE,
+        related_name='item_rating',
+    )
+    rate = models.FloatField(blank=False)
+    user = models.ForeignKey(
+        MyCustomUser,
+        blank=False,
+        on_delete=models.CASCADE,
+    )
+    comment = models.CharField(max_length=200,blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.full_name} rated {self.item} {self.rate}"

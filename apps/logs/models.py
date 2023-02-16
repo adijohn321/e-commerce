@@ -34,7 +34,7 @@ class Notification(BaseModel):
     message = models.CharField(max_length=200 , blank=True, null=True)
 
     def __str__(self):
-        return f"{self.user} {self.action} {self.topic}"
+        return f"{self.user.full_name} {self.action} {self.topic}"
 
     @property
     def get_new(self):

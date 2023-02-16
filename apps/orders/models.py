@@ -43,6 +43,12 @@ class Order(BaseModel):
                 return False
         return True
 
+    @property
+    def get_shop(self):
+        for item in self.order_item.all():
+            shop = item.item.shop
+        return shop
+
 class OrderItem(BaseModel):
     order = models.ForeignKey(
         Order,

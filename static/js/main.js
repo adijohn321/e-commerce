@@ -114,9 +114,33 @@ function get_badge_counts(){
         }
     })
 }
+function get_notifications(){
+    $.ajax({
+        url: 'logs/get-notifications',
+        success: function(data){
+            $('#notificationView').html( data.htmlStr)
+        },error: function(xhr, textStatus, error){
+
+        }
+    })
+}
+
+function mark_all_as_read(){
+    $.ajax({
+        url: 'logs/mark-all',
+        success: function(data){
+            get_notifications()
+            openMessageModal(data.message)
+            closeNotification()
+        },error: function(xhr, textStatus, error){
+
+        }
+    })
+}
 
 function openNotification() {
     document.getElementById("mySidenav").style.width = "400px";
+    get_notifications()
     
   }
   

@@ -1,0 +1,16 @@
+{% if notifications %}
+
+{% for notification in notifications %}
+
+
+<div {% if notification.status == 'new' %} style="width: 350px; padding: 10px; margin: auto; margin-top: 5px; background-color: aqua; color:  rgb(59, 31, 31); display: block;" {% else %}  style="width: 350px; padding: 10px; margin: auto; margin-top: 5px; background-color: white; color:  rgb(59, 31, 31); display: block;" {% endif %}>
+    <span>
+        {{ notification }}
+    </span>
+    <br>
+    <span>Date: {{ notification.created_at }}</span>
+</div>
+
+{% endfor %}
+
+{% endif %}

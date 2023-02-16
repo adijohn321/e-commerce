@@ -74,20 +74,22 @@
 
     {% block content %}
     {% endblock content %}
-        <div id="main">
-    <div class="body" id="body">
+    <div id="main">
+        <div class="body" id="body">
             {% block body %}
             {% endblock body %}
         </div>
+    </div>
+    <div id="mySidenav" class="sidenav">
+        <div style="text-align: center;">
+            <a style="cursor: pointer;" class="closebtn" onclick="closeNotification()">&times;</a>
+            <h2 style="text-align: center;">Notification</h2>
+            <button onclick="mark_all_as_read()" style="margin: auto; padding: 5px; padding-left: 20px; padding-right: 20px;" >Mark all as READ</button>
+        </div >
+        <div id="notificationView" style="display: flex; flex-direction: column;">
+
         </div>
-        <div id="mySidenav" class="sidenav">
-            <a style="cursor: pointer;" class="closebtn" onclick="closeNotification()">&times;</a><h2 style="text-align: center;">Notification</h2>
-            <div id="notificationView" style="display: flex; flex-direction: column;">
-                {% for notification in user.my_notifications.all %}
-                <div style="width: 100%; padding: 10px; margin: 5px; background-color: white; color:  rgb(59, 31, 31); display: block;">{{ notification }}</div>
-                {% endfor %}
-            </div>
-        </div>
+    </div>
     <div id="messageModal" class="messageModal">
         <div class="modal-content" style="margin-top: 30vh;">
             <h3 style="text-align: center;">Message</h3>

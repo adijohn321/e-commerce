@@ -17,6 +17,7 @@ from .models import *
 from django.template.loader import render_to_string
 from apps.shop.models import *
 from django.db.models import Q
+from apps.logs import views as logs
 
 
 
@@ -111,20 +112,38 @@ def ajax_accept_order(request):
         
     order.status = status
     order.save()
+    message = 'Operation was successful'
 
     items = OrderItem.objects.filter(order = order)
     
     if current_status == 'request_cancel' and status == 'canceled':
         for item in items:
             update_item_stock(item.quantity*(-1),item.item.id)
+            #notify user
+            logs.send_notification(request.user,order,'Approved cancelation of',order.owner,'important','sample')
+            message = 'Operation was successful. Order was canceled. All Items has been restored.'
     if status == 'preparing':
         for item in items:
             update_item_stock(item.quantity,item.item.id)
+            #notify user
+            logs.send_notification(request.user,order,'Approved your order',order.owner,'important','sample')
+            message = 'Order Accepted.'
+    if status == 'canceled' and current_status == 'pending':
+        message = 'Your order has been canceled.'
+    if status == 'otw':
+        #notify user
+        message = 'Order is now out for delivery.'
+    if status == 'recieved':
+        #notify seller
+        message = 'Order has been recieved.'
+    if status == 'request_cancel':
+        #notify seller
+        message = 'Request to cancel order has been sent to seller.'
 
     
     return JsonResponse({
         'success': True,
-        'message':'Operation was successful.',
+        'message': message,
     })
 
 def update_item_stock(quantity, item_id):

@@ -25,6 +25,7 @@ urlpatterns = [
     path('orders/', include('apps.orders.urls',namespace='orders')),
     path('shop/', include('apps.shop.urls',namespace='shop')),
     path('cart/', include('apps.cart.urls',namespace='cart')),
+    path('logs/', include('apps.logs.urls',namespace='logs')),
     path('login', views.LoginView.as_view(),name='login'),
     path('', views.home.as_view(),name='home'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

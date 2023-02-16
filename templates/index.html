@@ -54,7 +54,7 @@
             <a id="shopNav" class="menuItem notification" onclick="openNotification()"
                 style="text-decoration: none; color: white; margin-right: 15px;">
                 <span><i class="fa fa-bell"></i></span>
-                <span class="badge">{{ user.notifications.all|length }}</span>
+                <span class="badge" id="notificationBadge"></span>
             </a>
             <a class="menuItem" href="/" style="text-decoration: none; color: white; margin-right: 15px"><i
                     class="fa fa-user"></i> ({{user.full_name}})</a>
@@ -81,10 +81,10 @@
         </div>
         </div>
         <div id="mySidenav" class="sidenav">
-            <a style="cursor: pointer;" class="closebtn" onclick="closeNotification()">&times;</a>
+            <a style="cursor: pointer;" class="closebtn" onclick="closeNotification()">&times;</a><h2 style="text-align: center;">Notification</h2>
             <div id="notificationView" style="display: flex; flex-direction: column;">
                 {% for notification in user.my_notifications.all %}
-                <span>{{ notification }}</span>
+                <div style="width: 100%; padding: 10px; margin: 5px; background-color: white; color:  rgb(59, 31, 31); display: block;">{{ notification }}</div>
                 {% endfor %}
             </div>
         </div>

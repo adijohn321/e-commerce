@@ -28,7 +28,7 @@ class Notification(BaseModel):
         related_name='my_notifications',
         on_delete = models.CASCADE
     )
-    action = models.CharField(max_length=20,blank=False)
+    action = models.CharField(max_length=100,blank=False)
     topic  = models.CharField(max_length=100,blank=False)
     status = models.CharField(max_length=20, blank= False,choices=STATUS_CHOICES, default='new')
     message = models.CharField(max_length=200 , blank=True, null=True)

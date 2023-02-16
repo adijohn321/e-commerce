@@ -100,14 +100,15 @@ function viewOrders(status){
         }
     })
 }
+get_badge_counts()
+// get notification every 5 seconds
+setInterval(get_badge_counts, 5000)
 
 function get_badge_counts(){
     $.ajax({
-        url: 'orders/get-orders',
+        url: 'logs/get-notification',
         success: function(data){
-            $("#body").html(data.htmlStr)
-            document.getElementById('xx').value = status
-            clearInterval(showSlide)
+            document.getElementById('notificationBadge').textContent = data.notifications
         },error: function(xhr, textStatus, error){
 
         }

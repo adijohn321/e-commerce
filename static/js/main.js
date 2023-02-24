@@ -137,6 +137,22 @@ function mark_all_as_read(){
         }
     })
 }
+function get_order(pk){
+    var url = $(pk).attr("data-ajax-url")
+    var id = $(pk).attr("data-ajax-id")
+    $.ajax({
+        url: url,
+        data:{
+            'id':id,
+        },
+        success: function(data){
+            $("#body").html(data.htmlStr)
+            closeNotification()
+        },error: function(xhr, textStatus, error){
+
+        }
+    })
+}
 
 function openNotification() {
     document.getElementById("mySidenav").style.width = "400px";

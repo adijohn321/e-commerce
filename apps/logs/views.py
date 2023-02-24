@@ -25,7 +25,7 @@ def send_notification(user,topic,action,target_user,type,message):
     )
 
 def ajax_get_notifications(request):
-    notifications = Notification.objects.filter(target_user = request.user).order_by('created_at').reverse()
+    notifications = Notification.objects.filter(target_user = request.user).order_by('created_at').reverse()[:10]
 
     htmlStr = render_to_string(
         'render_notifications.html', {
@@ -43,3 +43,8 @@ def mark_all_as_read(request):
         'success':True,
         'message':'Marked all as read.',
     })
+
+
+def mark_as_read(id):
+    Notification.objects.filter(id = id).update(status = 'read')
+    

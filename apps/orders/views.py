@@ -106,6 +106,18 @@ def ajax_accept_order(request):
         'success': True,
         'message':'Operation failed the order already out for delivery.',
         })
+    if status == 'canceled' and current_status == 'preparing':
+        order.status = 'request_cancel'
+        order.save()
+        
+        shop = order.get_shop
+        owner = shop.user
+        
+        logs.send_notification(request.user,order,'is requesting to cancel order:',owner,'important','')
+        return JsonResponse({
+        'success': True,
+        'message':'Operation failed your order has already been approved. We notified the seller that you want to cancel your order.',
+        })
     if current_status == 'canceled':
         return JsonResponse({
         'success': True,
@@ -144,6 +156,7 @@ def ajax_accept_order(request):
         message = 'Order has been recieved.'
     if status == 'request_cancel':
         #notify seller
+        logs.send_notification(request.user,order,'is requesting to cancel order:',owner,'important','')
         message = 'Request to cancel order has been sent to seller.'
 
     
@@ -157,5 +170,26 @@ def update_item_stock(quantity, item_id):
     stock =  item.stock
     item.stock = (stock - (quantity))
     item.save()
+
+def ajax_get_order(request, pk):
+    logs.mark_as_read(request.GET.get('id'))
+    if request.user.user_type == 'shopper':
+        order = Order.objects.get(order_number = pk)
+        htmlStr = render_to_string('render_order.html', {
+            'order':order,
+        })
+        return JsonResponse({
+            'success': True,
+            'htmlStr': htmlStr,
+        })
+    else:
+        order = Order.objects.get(order_number = pk)
+        htmlStr = render_to_string('render_order_seller.html', {
+            'order':order,
+        })
+        return JsonResponse({
+            'success': True,
+            'htmlStr': htmlStr,
+        })
 
 

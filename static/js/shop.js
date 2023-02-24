@@ -72,7 +72,6 @@ $('body').on('submit','#upload-Item',function(e){
         data: formData,
         success: function (response) {
           registerModal.style.display = "none";
-          loadItems()
           openMessageModal("Successfully Created Item "+itemName+".")
         },
         error: function (response) {

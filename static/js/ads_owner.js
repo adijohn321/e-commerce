@@ -3,7 +3,6 @@ function editAds(id) {
   _id = parseInt(id)
   update_ad_id = parseInt(id)
   url = $('#itemsContainer').attr("data-ajax-url-edit")
-  console.log("0")
   $.ajax({
     url: url,
     data: {
@@ -22,7 +21,6 @@ $(document).on('submit', '#formEditAd', function (e) {
   var formData = new FormData(this)
   var token = $("#token").attr("data-csrf-token");
   var url = $(this).attr("data-ajax-url");
-  console.log(url)
 
   formData.append('csrfmiddlewaretoken', token)
   formData.append('item_id', update_ad_id)
@@ -32,6 +30,7 @@ $(document).on('submit', '#formEditAd', function (e) {
     type: 'post',
     data: formData
     , success: function (data) {
+      viewAllAds()
       openMessageModal(data.message)
       editAds(update_ad_id)
     }, error: function () {
@@ -48,5 +47,6 @@ $(document).on('submit', '#formEditAd', function (e) {
 $(document).on('click', '#deleteAd', function(e){
 
   var url = $(this).attr("data-ajax-url");
+  viewAllAds()
   openMessageModalPrompt('Are you sure to delete  this Ad Campaign? This proccess is irreversible proceed with CAUTION.',url, update_ad_id)
 })

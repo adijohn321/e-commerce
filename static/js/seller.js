@@ -40,7 +40,6 @@ $(document).on('click', '#submitAddStock', function (e) {
         }, success: function (data) {
             addToStockModal.style.display = "none";
             openMessageModal(data.message)
-            loadItems()
         }, error: function (xhr, textStatus, error) {
             console.log(xhr.statusText);
             console.log(textStatus);

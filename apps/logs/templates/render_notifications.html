@@ -3,7 +3,11 @@
 {% for notification in notifications %}
 
 
-<div onclick="get_order(this)" data-ajax-url="{% url 'orders:get_order' pk=notification.topic %}" data-ajax-id="{{ notification.id }}" {% if notification.status == 'new' %} style="width: 350px; padding: 10px; margin: 5px auto; background-color: aqua; color:  rgb(59, 31, 31); display: block;" {% else %}  style="width: 350px; padding: 10px; margin: 5px auto; background-color: white; color:  rgb(59, 31, 31); display: block;" {% endif %}>
+<div 
+{% if notification.type == 'important' %}
+onclick="get_order(this)"
+{% endif %}
+ data-ajax-url="{% url 'orders:get_order' pk=notification.topic %}" data-ajax-id="{{ notification.id }}" {% if notification.status == 'new' %} style="width: 350px; padding: 10px; margin: 5px auto; background-color: aqua; color:  rgb(59, 31, 31); display: block;" {% else %}  style="width: 350px; padding: 10px; margin: 5px auto; background-color: white; color:  rgb(59, 31, 31); display: block;" {% endif %}>
     <span {% if notification.type == 'important' and notification.status == 'new' %} style="font-weight: bold;" {% endif %}>
         {{ notification }}
     </span>

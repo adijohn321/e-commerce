@@ -25,7 +25,7 @@ def send_notification(user,topic,action,target_user,type,message):
     )
 
 def ajax_get_notifications(request):
-    notifications = Notification.objects.filter(target_user = request.user).order_by('created_at').reverse()[:10]
+    notifications = Notification.objects.filter(target_user = request.user).order_by('created_at').reverse()[:30]
 
     htmlStr = render_to_string(
         'render_notifications.html', {

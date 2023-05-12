@@ -8,6 +8,8 @@ from django.views.generic.base import TemplateView
 from django.http import HttpResponse
 from .forms import *
 from apps.cart.models import *
+from apps.logs.views import *
+from apps.logs.models import *
 
 from django.template.loader import render_to_string
 from django.db.models import Q
@@ -118,7 +120,7 @@ def ajax_add_item_stock(request):
         })
     if quantity<1:
         return JsonResponse({'success': True,
-        'message':"Value for quantity cannot be negative.",
+        'message':"Value for quantity cannot be less than or equal to 0.",
     })
     owner = MyCustomUser.objects.get(id=request.user.id)
     item = Item.objects.get(pk=item_id)
@@ -132,6 +134,12 @@ def ajax_add_item_stock(request):
     current_stock+= quantity
     item.stock = current_stock
     item.save()
+    #send notification to shoppers with wishlists
+    items = CartItem.objects.filter(item = item)
+    for cart_item in items:
+        cart_owner = cart_item.cart.owner
+        send_notification(request.user,item,'Added stock to item',cart_owner,'common','')
+        
     return JsonResponse({'success': True,
         'message':"Item stock successfully added.",
     })

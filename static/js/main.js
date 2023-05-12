@@ -108,7 +108,10 @@ function get_badge_counts(){
     $.ajax({
         url: 'logs/get-notification',
         success: function(data){
-            document.getElementById('notificationBadge').textContent = data.notifications
+            if (data.notifications == '0')
+                document.getElementById('notificationBadge').textContent = "";
+            else
+                document.getElementById('notificationBadge').textContent = data.notifications;
         },error: function(xhr, textStatus, error){
 
         }

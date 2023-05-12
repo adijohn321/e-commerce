@@ -28,4 +28,5 @@ urlpatterns = [
     path('logs/', include('apps.logs.urls',namespace='logs')),
     path('login', views.LoginView.as_view(),name='login'),
     path('', views.home.as_view(),name='home'),
+    path('profile', views.Profile.as_view(),name='profile'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

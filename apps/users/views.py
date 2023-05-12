@@ -58,6 +58,7 @@ class LoginView(FormView):
         if user is not None:
             if user.is_active:
                 login(self.request, user)
+                self.request.session.set_expiry(1000)
                 if form.cleaned_data['remember_me']:
                     self.request.session.set_expiry(1209600)
                 return HttpResponseRedirect(self.get_success_url())
@@ -76,6 +77,15 @@ class home(LoginRequiredMixin,TemplateView):
     
         context = super(home, self).get_context_data(**kwargs)
         return context
+    
+class Profile(LoginRequiredMixin,TemplateView):
+    template_name = 'profile.html'
+    
+    def get_context_data(self, **kwargs):
+    
+        context = super(Profile, self).get_context_data(**kwargs)
+        return context
+    
 def Logout(request):
     """logout logged in user"""
     logout(request)

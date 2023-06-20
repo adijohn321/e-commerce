@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cart,CartItem
+from .models import Cart,CartItem,Publications
 from django.utils.translation import gettext_lazy as _
 # Register your models here.
 
@@ -19,5 +19,15 @@ class CartItem(admin.ModelAdmin):
             'cart',
             'item',
             'quantity',
+        )}),
+    )
+
+@admin.register(Publications)
+class CartItem(admin.ModelAdmin):
+    fieldsets = (
+        (_('Publication'),{'fields':(
+            'title',
+            'category',
+            'area',
         )}),
     )

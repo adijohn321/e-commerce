@@ -13,6 +13,8 @@ from apps.logs.models import *
 
 from django.template.loader import render_to_string
 from django.db.models import Q
+from PIL import Image
+import io
 
 # Create your views here.
 
@@ -171,6 +173,17 @@ def ajax_get_items_owner(request):
         'item_id':item_id,
     })
 
+def handle_uploaded_image(file):
+    img = Image.open(file)
+    # Resize the image to your desired dimensions
+    img.thumbnail((800, 800))
+    # Save the image to a buffer
+    buffer = io.BytesIO()
+    img.save(buffer, format='JPEG', quality=50)
+    # Set the file pointer at the beginning of the buffer
+    buffer.seek(0)
+    # Return the modified image buffer
+    return buffer
  
 def ajax_craete_ads(request):
  
@@ -185,12 +198,13 @@ def ajax_craete_ads(request):
     shop = Shop.objects.get(user=user)
     ads_description =request.POST.get('ads_description')
     ads_name = request.POST.get('ads_name')
-    ads_image =request.FILES['file']
+    ads_image =request.FILES.cleaned_data['file']
+    processed_image = handle_uploaded_image(ads_image)
     AdsCampaign.objects.create(
             shop= shop,
             ads_name = ads_name,
             ads_description = ads_description,
-            ads_image = ads_image
+            ads_image = processed_image
         )
         
     return JsonResponse({'success': True,})

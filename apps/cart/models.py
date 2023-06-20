@@ -3,6 +3,8 @@ from Shoppee.models import BaseModel
 from apps.users.models import MyCustomUser
 from apps.shop.models import Item
 
+from django.utils.translation import gettext_lazy as _
+
 # Create your models here.
 class Cart(BaseModel):
     owner = models.OneToOneField(
@@ -36,3 +38,23 @@ class CartItem(BaseModel):
     @property
     def total(self):
         return self.quantity*self.item.price
+
+
+class Publications(BaseModel):
+    title = models.CharField(max_length=100,blank= False,unique=True)
+    category = models.CharField(max_length=50,blank= False)
+    area = models.CharField(max_length=50,blank = False)
+    author = models.CharField(max_length=50,blank = False)
+    #keyword = models.CharField(max_length=50,blank = True)
+    desc = models.TextField()
+    code = models.CharField(max_length=50,blank= False)
+    file_link= models.CharField(max_length=20,blank= False)
+    cover = models.FileField(upload_to='publications')
+    class Meta:
+        verbose_name = _('Publication')
+        verbose_name_plural = _('Publications')
+
+
+    def __str__(self):
+        return f"{self.title}"
+

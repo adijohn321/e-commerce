@@ -1,0 +1,115 @@
+{% extends 'index.html' %}
+
+{% load static %}
+{% block title %} Citi Hardware {% endblock %}
+
+{% block css %}
+
+<link href="{% static 'css/popup.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+{% if user.user_type == 'seller' %}
+<div id="myModal" class="modal" data-ajax-url="{% url 'shop:create_item' %}">
+    <div class="modal-content">
+        <div style=" text-align: end;">
+            <span class="close">&times;</span>
+        </div>
+        <div class="form">
+            <h2>Add New Item</h2>
+            <div style="text-align: left;">
+                <form id="upload-Item" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <label for="itemName">Item Name</label>
+                    <input type="text" name="itemName" id="itemName" style="width: 100%;">
+                    <label for="description">Desription</label>
+                    <input type="text" name="description" id="description" style="width: 100%;">
+                    <label for="price">Price</label>
+                    <input type="text" name="price" id="price" style="width: 100%;">
+                    <label for="imgInp">Item Image</label>
+                    <br>
+                    <input type="file" src="" alt="" name="itemImage" accept="image/*" id="imgInp">
+                    <br>
+
+                    <img id="blah" src="#" alt="Image Preview" /
+                        style="    width: -webkit-fill-available;height: auto;">
+                    <br>
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal1" class="modal" data-ajax-url="{% url 'shop:create_ads' %}" data-csrf-token="{{ csrf_token }}">
+    <div class="modal-content">
+        <div style=" text-align: end;">
+            <span class="close">&times;</span>
+        </div>
+        <div class="form" id="form">
+            <h2>Add New Ads Campaign</h2>
+
+            <form id="upload-file" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="ads_name">Campaign Name</label>
+                <input type="text" name="ads_name" id="ads_name" style="width: 100%;">
+                <label for="ads_description">Desription</label>
+                <input type="text" name="ads_description" id="ads_description" style="width: 100%;">
+                <label for="ads_image">Ads Image</label>
+                <br>
+                <input type="file" name="file" id="imgInput">
+                <br>
+                <img id="preview1" src="#" alt="Image Preview" /
+                    style="    width: -webkit-fill-available;height: auto;">
+                <br>
+                <button type="submit" class="btn btn-success">Upload</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block body %}
+    <div id="main1" style="position: absolute; top: 6vh; width: 100%; display: flex; ">
+        <!-- space for adds -->
+        {% if user.user_type == 'shopper' %}
+        <div
+            style="width: 25%; height: 92vh; background-color: wheat; margin: auto; margin-top: 0px; position: sticky; top: 6vh;">
+            dito ang Categories
+        </div>
+        {% endif %}
+        <div style="width: 70%; overflow-x: hidden; margin: auto; overflow-y: scroll; height: 92vh;">
+            <div style="height: 40vh ; background-color: chocolate; text-align: center; margin: auto;" id="adsDiv"
+                data-ajax-url="{% url 'shop:ads' %}" data-ajax-User-id="{{ user.id }}">
+                {% block ads %}
+                {% endblock %}
+            </div>
+            <div style="height: auto; width: 100%; background-color: aquamarine;text-align: center;">
+
+                <div class="slideshow-container" id="slideContainer" style="text-align: center;">
+                    <h1 style="padding-top: 50px;">Shop Products</h1>
+                </div>
+
+                <div class="cardContainer" id="cardContainer" data-ajax-url="{% url 'shop:items' %}">
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/popup-home.js' %}"></script>
+{% if user.user_type == 'seller' %}
+<script src="{% static 'js/shop.js' %}"></script>
+{% endif %}
+<script src="{% static 'js/ads.js' %}"></script>
+{% endblock %}
+
